@@ -1,30 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+//using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Datgel
 {
-	//public class Point
-	//{
-	//	private double v1;
-	//	private double v2;
-
-	//	public Point(double v1, double v2)
-	//	{
-	//		this.v1 = v1;
-	//		this.v2 = v2;
-	//	}
-
-	//	public double X { get; set; }
-	//	public double Y { get; set; }
-	//}
-
 	public class Line
 	{
-		public PointF Point1 { get; set; } = new PointF();
-		public PointF Point2 { get; set; } = new PointF();
+		public Point Point1 { get; set; } = new Point();
+		public Point Point2 { get; set; } = new Point();
 	}
 }

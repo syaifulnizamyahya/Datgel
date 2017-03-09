@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+//using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace Datgel
@@ -61,13 +62,13 @@ namespace Datgel
 			logRichTextBox.Text = log;
 		}
 
-		public List<PointF> Points { get; set; } = new List<PointF>();
-		float minX, maxX;
-		float minY, maxY;
+		public List<Point> Points { get; set; } = new List<Point>();
+		double minX, maxX;
+		double minY, maxY;
 
 		private void InitializePoints()
 		{
-			BindingList<PointF> bindingList;
+			BindingList<Point> bindingList;
 			BindingSource source;
 
 			Points.Add(new Point(32, 100));
@@ -77,7 +78,7 @@ namespace Datgel
 			Points.Add(new Point(70, 114));
 			Points.Add(new Point(83, 99));
 
-			bindingList = new BindingList<PointF>(Points);
+			bindingList = new BindingList<Point>(Points);
 			source = new BindingSource(bindingList, null);
 			pointsGridView.DataSource = source;
 
@@ -111,11 +112,11 @@ namespace Datgel
 			this.Close();
 		}
 
-		//http://paulbourke.net/geometry/pointlineplane/
-		public static bool DoLinesIntersect(Line Line1, Line Line2, ref PointF Intersection, ref string log)
+		//Adapted from http://paulbourke.net/geometry/pointlineplane/Helpers.cs
+		public static bool DoLinesIntersect(Line Line1, Line Line2, ref Point Intersection, ref string log)
 		{
 			// Denominator for ua and ub are the same, so store this calculation
-			float Denominator =
+			double Denominator =
 			   (Line2.Point2.Y - Line2.Point1.Y) * (Line1.Point2.X - Line1.Point1.X)
 			   -
 			   (Line2.Point2.X - Line2.Point1.X) * (Line1.Point2.Y - Line1.Point1.Y);
@@ -123,13 +124,13 @@ namespace Datgel
 			log = log + "Denominator : " + Denominator + "\n";
 
 			//n_a and n_b are calculated as seperate values for readability
-			float Numerator1 =
+			double Numerator1 =
 			   (Line2.Point2.X - Line2.Point1.X) * (Line1.Point1.Y - Line2.Point1.Y)
 			   -
 			   (Line2.Point2.Y - Line2.Point1.Y) * (Line1.Point1.X - Line2.Point1.X);
 			log = log + "Numerator1 : " + Numerator1 + "\n";
 
-			float Numerator2 =
+			double Numerator2 =
 			   (Line1.Point2.X - Line1.Point1.X) * (Line1.Point1.Y - Line2.Point1.Y)
 			   -
 			   (Line1.Point2.Y - Line1.Point1.Y) * (Line1.Point1.X - Line2.Point1.X);
@@ -144,9 +145,9 @@ namespace Datgel
 				return false;
 
 			// Calculate the intermediate fractional point that the lines potentially intersect.
-			float Unknown1 = Numerator1 / Denominator;
+			double Unknown1 = Numerator1 / Denominator;
 			log = log + "Unknown1 : " + Unknown1 + "\n";
-			float Unknown2 = Numerator2 / Denominator;
+			double Unknown2 = Numerator2 / Denominator;
 			log = log + "Unknown2 : " + Unknown2 + "\n";
 
 			// The fractional point will be between 0 and 1 inclusive if the lines
@@ -163,55 +164,92 @@ namespace Datgel
 			return false;
 		}
 
+		// adapted from http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment/32814053#32814053
+		public double MinDistancePointToLine(Line line, Point point)
+		{
+			Vector offset = (Vector)line.Point1;
+			Vector vector = (Vector)(line.Point2 - offset);
+
+			var v = (Vector)point - offset;
+
+			// first, find a projection point on the segment in parametric form (0..1)
+			var p = (v * vector) / vector.LengthSquared;
+
+			// and limit it so it lays inside the segment
+			p = Math.Min(Math.Max(p, 0), 1);
+
+			// now, find the distance from that point to our point
+			return (vector * p - v).Length;
+		}
+
 		private void calculateButton_Click(object sender, EventArgs e)
 		{
-			float x = default(float);
-			float y = default(float);
+			double x = default(double);
+			double y = default(double);
 
-			bool isXFloat;
-			bool isYFloat;
+			bool isXdouble;
+			bool isYdouble;
 
-			PointF intersection = default(PointF);
+			Point intersection = default(Point);
+			double distance = default(double);
 
 			// get values from textbox
-			if (float.TryParse(xTextBox.Text, out x))
+			if (double.TryParse(xTextBox.Text, out x))
 			{
-				//log = log + "x is a float" + "\n";
-				isXFloat = true;
+				//log = log + "x is a double" + "\n";
+				isXdouble = true;
 			}
 			else
 			{
-				log = log + "x is not a float" + "\n";
-				isXFloat = false;
+				log = log + "x is not a double" + "\n";
+				isXdouble = false;
 			}
 
-			if (float.TryParse(yTextBox.Text, out y))
+			if (double.TryParse(yTextBox.Text, out y))
 			{
-				//log = log + "y is a float" + "\n";
-				isYFloat = true;
+				//log = log + "y is a double" + "\n";
+				isYdouble = true;
 			}
 			else
 			{
-				log = log + "y is not a float" + "\n";
-				isYFloat = false;
+				log = log + "y is not a double" + "\n";
+				isYdouble = false;
 			}
 
-			if (isXFloat && isYFloat)
+			if (isXdouble && isYdouble)
 			{
-				// x and y are float
-				log = log + "x and y are float" + "\n";
+				// x and y are double
+				log = log + "x and y are double" + "\n";
 
+				// find the min distance between the point and line
+				// for each line in polyline
+				for (int i = 0; i < Lines.Count; i++)
+				{
+					{
+						distance = MinDistancePointToLine(Lines[i], new Point(x, y));
 
+						// since its a double, set range instead of absolute value
+						double tolerance = 0.001;
+						if (distance > -tolerance && distance < tolerance)
+						{
+							// point is on line
+							log = log + "Tolerance : " + tolerance + "\n";
+							log = log + "Distance point to line : " + distance + "\n";
+							log = log + "Point is on line" + "\n";
+							break;
+						}
+					}
+				}
 			}
-			else if (isXFloat && !isYFloat)
+			else if (isXdouble && !isYdouble)
 			{
-				// only x is float
-				log = log + "only x is float" + "\n";
+				// only x is double
+				log = log + "only x is double" + "\n";
 
 				// calculate new line ( 2 points)
 				var line = new Line();
-				line.Point1 = new PointF(x, minY);
-				line.Point2 = new PointF(x, maxY);
+				line.Point1 = new Point(x, minY);
+				line.Point2 = new Point(x, maxY);
 
 				// for each line in polyline
 				for (int i = 0; i < Lines.Count; i++)
@@ -225,15 +263,15 @@ namespace Datgel
 					}
 				}
 			}
-			else if (!isXFloat && isYFloat)
+			else if (!isXdouble && isYdouble)
 			{
-				// only y is float
-				log = log + "only y is float" + "\n";
+				// only y is double
+				log = log + "only y is double" + "\n";
 
 				// calculate new line ( 2 points)
 				var line = new Line();
-				line.Point1 = new PointF(minX, y);
-				line.Point2 = new PointF(maxX, y);
+				line.Point1 = new Point(minX, y);
+				line.Point2 = new Point(maxX, y);
 
 				// for each line in polyline
 				for (int i = 0; i < Lines.Count; i++)
@@ -247,10 +285,10 @@ namespace Datgel
 					}
 				}
 			}
-			else if (!isXFloat && !isYFloat)
+			else if (!isXdouble && !isYdouble)
 			{
-				// none are float
-				log = log + "none are float" + "\n";
+				// none are double
+				log = log + "none are double" + "\n";
 
 				// show dialog box
 				MessageBox.Show("One coordinate must be provided", "No coordinate found");

@@ -28,12 +28,38 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
+			this.pointsGridView = new System.Windows.Forms.DataGridView();
+			((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).BeginInit();
+			this.SuspendLayout();
+			// 
+			// pointsGridView
+			// 
+			this.pointsGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.pointsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.pointsGridView.Location = new System.Drawing.Point(12, 12);
+			this.pointsGridView.Name = "pointsGridView";
+			this.pointsGridView.RowTemplate.Height = 24;
+			this.pointsGridView.Size = new System.Drawing.Size(335, 393);
+			this.pointsGridView.TabIndex = 0;
+			// 
+			// Form1
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(591, 586);
+			this.Controls.Add(this.pointsGridView);
+			this.Name = "Form1";
 			this.Text = "Form1";
+			((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).EndInit();
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion
+
+		private System.Windows.Forms.DataGridView pointsGridView;
 	}
 }
 

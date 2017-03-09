@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,17 +49,15 @@ namespace Datgel
 			line.Point1 = Points[4];
 			line.Point2 = Points[5];
 			Lines.Add(line);
-
-			line = new Line();
-			line.Point1 = Points[5];
-			line.Point2 = Points[6];
-			Lines.Add(line);
-			
 		}
 
-		public List<Point> Points { get; set; } = new List<Point>();
+		public List<PointF> Points { get; set; } = new List<PointF>();
+
 		private void InitializePoints()
 		{
+			BindingList<PointF> bindingList;
+			BindingSource source;
+
 			Points.Add(new Point(32, 100));
 			Points.Add(new Point(44, 94));
 			Points.Add(new Point(46, 97));
@@ -66,8 +65,8 @@ namespace Datgel
 			Points.Add(new Point(70, 114));
 			Points.Add(new Point(83, 99));
 
-			var bindingList = new BindingList<Point>(Points);
-			var source = new BindingSource(bindingList, null);
+			bindingList = new BindingList<PointF>(Points);
+			source = new BindingSource(bindingList, null);
 			pointsGridView.DataSource = source;
 		}
 
@@ -77,10 +76,10 @@ namespace Datgel
 		}
 
 		//http://paulbourke.net/geometry/pointlineplane/
-		public static bool DoLinesIntersect(Line Line1, Line Line2, ref Point Intersection, ref string log)
+		public static bool DoLinesIntersect(Line Line1, Line Line2, ref PointF Intersection, ref string log)
 		{
 			// Denominator for ua and ub are the same, so store this calculation
-			double Denominator =
+			float Denominator =
 			   (Line2.Point2.Y - Line2.Point1.Y) * (Line1.Point2.X - Line1.Point1.X)
 			   -
 			   (Line2.Point2.X - Line2.Point1.X) * (Line1.Point2.Y - Line1.Point1.Y);
@@ -88,13 +87,13 @@ namespace Datgel
 			log = log + "Denominator : " + Denominator + "\n";
 
 			//n_a and n_b are calculated as seperate values for readability
-			double Numerator1 =
+			float Numerator1 =
 			   (Line2.Point2.X - Line2.Point1.X) * (Line1.Point1.Y - Line2.Point1.Y)
 			   -
 			   (Line2.Point2.Y - Line2.Point1.Y) * (Line1.Point1.X - Line2.Point1.X);
 			log = log + "Numerator1 : " + Numerator1 + "\n";
 
-			double Numerator2 =
+			float Numerator2 =
 			   (Line1.Point2.X - Line1.Point1.X) * (Line1.Point1.Y - Line2.Point1.Y)
 			   -
 			   (Line1.Point2.Y - Line1.Point1.Y) * (Line1.Point1.X - Line2.Point1.X);
@@ -109,9 +108,9 @@ namespace Datgel
 				return false;
 
 			// Calculate the intermediate fractional point that the lines potentially intersect.
-			double Unknown1 = Numerator1 / Denominator;
+			float Unknown1 = Numerator1 / Denominator;
 			log = log + "Unknown1 : " + Unknown1 + "\n";
-			double Unknown2 = Numerator2 / Denominator;
+			float Unknown2 = Numerator2 / Denominator;
 			log = log + "Unknown2 : " + Unknown2 + "\n";
 
 			// The fractional point will be between 0 and 1 inclusive if the lines

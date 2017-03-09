@@ -45,20 +45,24 @@
 			this.pointsGridView.Location = new System.Drawing.Point(12, 12);
 			this.pointsGridView.Name = "pointsGridView";
 			this.pointsGridView.RowTemplate.Height = 24;
-			this.pointsGridView.Size = new System.Drawing.Size(279, 393);
+			this.pointsGridView.Size = new System.Drawing.Size(279, 251);
 			this.pointsGridView.TabIndex = 0;
 			// 
 			// xTextBox
 			// 
-			this.xTextBox.Location = new System.Drawing.Point(32, 411);
+			this.xTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.xTextBox.Location = new System.Drawing.Point(33, 276);
 			this.xTextBox.Name = "xTextBox";
 			this.xTextBox.Size = new System.Drawing.Size(100, 22);
 			this.xTextBox.TabIndex = 1;
 			// 
 			// label1
 			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 414);
+			this.label1.Location = new System.Drawing.Point(13, 279);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(14, 17);
 			this.label1.TabIndex = 2;
@@ -66,8 +70,10 @@
 			// 
 			// label2
 			// 
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(170, 414);
+			this.label2.Location = new System.Drawing.Point(171, 279);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(15, 17);
 			this.label2.TabIndex = 4;
@@ -75,14 +81,18 @@
 			// 
 			// yTextBox
 			// 
-			this.yTextBox.Location = new System.Drawing.Point(191, 411);
+			this.yTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.yTextBox.Location = new System.Drawing.Point(192, 276);
 			this.yTextBox.Name = "yTextBox";
 			this.yTextBox.Size = new System.Drawing.Size(100, 22);
 			this.yTextBox.TabIndex = 3;
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(12, 468);
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.button1.Location = new System.Drawing.Point(12, 333);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(279, 23);
 			this.button1.TabIndex = 5;
@@ -92,7 +102,9 @@
 			// 
 			// calculateButton
 			// 
-			this.calculateButton.Location = new System.Drawing.Point(12, 439);
+			this.calculateButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.calculateButton.Location = new System.Drawing.Point(13, 304);
 			this.calculateButton.Name = "calculateButton";
 			this.calculateButton.Size = new System.Drawing.Size(279, 23);
 			this.calculateButton.TabIndex = 6;
@@ -112,7 +124,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(588, 499);
+			this.ClientSize = new System.Drawing.Size(303, 368);
 			this.Controls.Add(this.logRichTextBox);
 			this.Controls.Add(this.calculateButton);
 			this.Controls.Add(this.button1);

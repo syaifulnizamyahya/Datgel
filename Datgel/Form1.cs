@@ -189,6 +189,7 @@ namespace Datgel
 
 			bool isXdouble;
 			bool isYdouble;
+			bool isOnLine;
 
 			Point intersection = default(Point);
 			double distance = default(double);
@@ -223,22 +224,30 @@ namespace Datgel
 
 				// find the min distance between the point and line
 				// for each line in polyline
+				isOnLine = false;
 				for (int i = 0; i < Lines.Count; i++)
 				{
-					{
-						distance = MinDistancePointToLine(Lines[i], new Point(x, y));
+					distance = MinDistancePointToLine(Lines[i], new Point(x, y));
 
-						// since its a double, set range instead of absolute value
-						double tolerance = 0.001;
-						if (distance > -tolerance && distance < tolerance)
-						{
-							// point is on line
-							log = log + "Tolerance : " + tolerance + "\n";
-							log = log + "Distance point to line : " + distance + "\n";
-							log = log + "Point is on line" + "\n";
-							break;
-						}
+					// since its a double, set range instead of absolute value
+					double tolerance = 0.001;
+					if (distance > -tolerance && distance < tolerance)
+					{
+						// point is on line
+						log = log + "Tolerance : " + tolerance + "\n";
+						log = log + "Distance point to line : " + distance + "\n";
+						log = log + "Point is on line" + "\n";
+						isOnLine = true;
+						break;
 					}
+				}
+				if(isOnLine)
+				{
+					MessageBox.Show("Coordinate are in straight line.", "Are the point on the straight line?");
+				}
+				else
+				{
+					MessageBox.Show("Coordinate are NOT in straight line.", "Are the point on the straight line?");
 				}
 			}
 			else if (isXdouble && !isYdouble)
@@ -254,7 +263,7 @@ namespace Datgel
 				// for each line in polyline
 				for (int i = 0; i < Lines.Count; i++)
 				{
-					if(DoLinesIntersect(line, Lines[i], ref intersection, ref log))
+					if (DoLinesIntersect(line, Lines[i], ref intersection, ref log))
 					{
 						log = log + "Intersect at line " + i + "\n";
 						xTextBox.Text = intersection.X.ToString();

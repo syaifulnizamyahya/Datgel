@@ -251,6 +251,9 @@ namespace Datgel
 			{
 				// none are float
 				log = log + "none are float" + "\n";
+
+				// show dialog box
+				MessageBox.Show("One coordinate must be provided", "No coordinate found");
 			}
 
 			logRichTextBox.Text = log;

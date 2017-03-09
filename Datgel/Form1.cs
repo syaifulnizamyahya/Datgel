@@ -12,6 +12,9 @@ namespace Datgel
 {
 	public partial class Form1 : Form
 	{
+		string log = default(string);
+		//log = log + "" + "\n";
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -29,29 +32,38 @@ namespace Datgel
 			line.Point1 = Points[0];
 			line.Point2 = Points[1];
 			Lines.Add(line);
+			log = log + "Line 1 (" + line.Point1.X + ", " + line.Point1.Y + ") (" + line.Point2.X + ", " + line.Point2.Y + ")\n";
 
 			line = new Line();
 			line.Point1 = Points[1];
 			line.Point2 = Points[2];
 			Lines.Add(line);
+			log = log + "Line 2 (" + line.Point1.X + ", " + line.Point1.Y + ") (" + line.Point2.X + ", " + line.Point2.Y + ")\n";
 
 			line = new Line();
 			line.Point1 = Points[2];
 			line.Point2 = Points[3];
 			Lines.Add(line);
+			log = log + "Line 3 (" + line.Point1.X + ", " + line.Point1.Y + ") (" + line.Point2.X + ", " + line.Point2.Y + ")\n";
 
 			line = new Line();
 			line.Point1 = Points[3];
 			line.Point2 = Points[4];
 			Lines.Add(line);
+			log = log + "Line 4 (" + line.Point1.X + ", " + line.Point1.Y + ") (" + line.Point2.X + ", " + line.Point2.Y + ")\n";
 
 			line = new Line();
 			line.Point1 = Points[4];
 			line.Point2 = Points[5];
 			Lines.Add(line);
+			log = log + "Line 5 (" + line.Point1.X + ", " + line.Point1.Y + ") (" + line.Point2.X + ", " + line.Point2.Y + ")\n";
+
+			logRichTextBox.Text = log;
 		}
 
 		public List<PointF> Points { get; set; } = new List<PointF>();
+		float minX, maxX;
+		float minY, maxY;
 
 		private void InitializePoints()
 		{
@@ -68,6 +80,30 @@ namespace Datgel
 			bindingList = new BindingList<PointF>(Points);
 			source = new BindingSource(bindingList, null);
 			pointsGridView.DataSource = source;
+
+			minX = maxX = Points[0].X;
+			minY = maxY = Points[0].Y;
+
+			for (int i = 1; i < Points.Count; i++)
+			{
+				if (Points[i].X < minX)
+				{
+					minX = Points[i].X;
+				}
+				else if (Points[i].X > maxX)
+				{
+					maxX = Points[i].X;
+				}
+
+				if (Points[i].Y < minY)
+				{
+					minY = Points[i].Y;
+				}
+				else if (Points[i].Y > maxY)
+				{
+					maxY = Points[i].Y;
+				}
+			}
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -129,8 +165,95 @@ namespace Datgel
 
 		private void calculateButton_Click(object sender, EventArgs e)
 		{
-			// get values from textbox
+			float x = default(float);
+			float y = default(float);
 
+			bool isXFloat;
+			bool isYFloat;
+
+			PointF intersection = default(PointF);
+
+			// get values from textbox
+			if (float.TryParse(xTextBox.Text, out x))
+			{
+				//log = log + "x is a float" + "\n";
+				isXFloat = true;
+			}
+			else
+			{
+				log = log + "x is not a float" + "\n";
+				isXFloat = false;
+			}
+
+			if (float.TryParse(yTextBox.Text, out y))
+			{
+				//log = log + "y is a float" + "\n";
+				isYFloat = true;
+			}
+			else
+			{
+				log = log + "y is not a float" + "\n";
+				isYFloat = false;
+			}
+
+			if (isXFloat && isYFloat)
+			{
+				// x and y are float
+				log = log + "x and y are float" + "\n";
+
+
+			}
+			else if (isXFloat && !isYFloat)
+			{
+				// only x is float
+				log = log + "only x is float" + "\n";
+
+				// calculate new line ( 2 points)
+				var line = new Line();
+				line.Point1 = new PointF(x, minY);
+				line.Point2 = new PointF(x, maxY);
+
+				// for each line in polyline
+				for (int i = 0; i < Lines.Count; i++)
+				{
+					if(DoLinesIntersect(line, Lines[i], ref intersection, ref log))
+					{
+						log = log + "Intersect at line " + i + "\n";
+						xTextBox.Text = intersection.X.ToString();
+						yTextBox.Text = intersection.Y.ToString();
+						break;
+					}
+				}
+			}
+			else if (!isXFloat && isYFloat)
+			{
+				// only y is float
+				log = log + "only y is float" + "\n";
+
+				// calculate new line ( 2 points)
+				var line = new Line();
+				line.Point1 = new PointF(minX, y);
+				line.Point2 = new PointF(maxX, y);
+
+				// for each line in polyline
+				for (int i = 0; i < Lines.Count; i++)
+				{
+					if (DoLinesIntersect(line, Lines[i], ref intersection, ref log))
+					{
+						log = log + "Intersect at line " + i + "\n";
+						xTextBox.Text = intersection.X.ToString();
+						yTextBox.Text = intersection.Y.ToString();
+						break;
+					}
+				}
+			}
+			else if (!isXFloat && !isYFloat)
+			{
+				// none are float
+				log = log + "none are float" + "\n";
+			}
+
+			logRichTextBox.Text = log;
 		}
 	}
 }

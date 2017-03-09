@@ -24,7 +24,7 @@ namespace Datgel
 
 	public class Line
 	{
-		public PointF Point1 { get; set; }
-		public PointF Point2 { get; set; }
+		public PointF Point1 { get; set; } = new PointF();
+		public PointF Point2 { get; set; } = new PointF();
 	}
 }

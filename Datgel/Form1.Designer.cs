@@ -35,6 +35,7 @@
 			this.yTextBox = new System.Windows.Forms.TextBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.calculateButton = new System.Windows.Forms.Button();
+			this.logRichTextBox = new System.Windows.Forms.RichTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.pointsGridView)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -99,11 +100,20 @@
 			this.calculateButton.UseVisualStyleBackColor = true;
 			this.calculateButton.Click += new System.EventHandler(this.calculateButton_Click);
 			// 
+			// logRichTextBox
+			// 
+			this.logRichTextBox.Location = new System.Drawing.Point(316, 12);
+			this.logRichTextBox.Name = "logRichTextBox";
+			this.logRichTextBox.Size = new System.Drawing.Size(260, 475);
+			this.logRichTextBox.TabIndex = 7;
+			this.logRichTextBox.Text = "";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(303, 499);
+			this.ClientSize = new System.Drawing.Size(588, 499);
+			this.Controls.Add(this.logRichTextBox);
 			this.Controls.Add(this.calculateButton);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.label2);
@@ -128,6 +138,7 @@
 		private System.Windows.Forms.TextBox yTextBox;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button calculateButton;
+		private System.Windows.Forms.RichTextBox logRichTextBox;
 	}
 }
 
